@@ -11,6 +11,74 @@
         }
     ],
     "paths": {
+        "/admin/sign-in": {
+            "post": {
+                "tags": [
+                    "Admin Authentication"
+                ],
+                "operationId": "90d67c15e6d11bcf4bd4400225c8da01",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "403": {
+                        "description": "Not allowed in admin panel"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/admin/sign-out": {
+            "post": {
+                "tags": [
+                    "Admin Authentication"
+                ],
+                "operationId": "f545716a49630865ae51174555a5179e",
+                "responses": {
+                    "200": {
+                        "description": "Logged out"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/test": {
             "get": {
                 "tags": [
@@ -25,7 +93,21 @@
             }
         }
     },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Paste the token returned by /admin/login",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
     "tags": [
+        {
+            "name": "Admin Authentication",
+            "description": "Admin Authentication"
+        },
         {
             "name": "Test",
             "description": "Test"
