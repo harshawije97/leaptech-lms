@@ -1,0 +1,34 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Leptech LMS API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API server"
+        }
+    ],
+    "paths": {
+        "/test": {
+            "get": {
+                "tags": [
+                    "Test"
+                ],
+                "operationId": "2cf1648f26e6c36635ef5a3b5321fcff",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Test",
+            "description": "Test"
+        }
+    ]
+}
