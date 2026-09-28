@@ -17,6 +17,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
         ]);
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if ($request->is('api/*')) {
+                return null;
+            }
+
+            if ($request->is('admin/*')) {
+                return '/admin/sign-in';
+            }
+
+            return '/sign-in';
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

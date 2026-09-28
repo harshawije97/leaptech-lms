@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Organization\OrganizationController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +20,8 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth:sanctum', 'role:super_admin,admin'])->group(function () {
         Route::post('/sign-out', [AuthController::class, 'adminLoggedOut']);
 
+        Route::prefix('org')->group(function () {
+            Route::post('/create', [OrganizationController::class, 'createOrganization']);
+        });
     });
 });

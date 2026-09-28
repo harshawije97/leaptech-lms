@@ -79,6 +79,74 @@
                 ]
             }
         },
+        "/admin/org/create": {
+            "post": {
+                "tags": [
+                    "Organization"
+                ],
+                "operationId": "7d333c555114e616c17d6f759a599de3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "shortDescription"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Acme Inc."
+                                    },
+                                    "shortDescription": {
+                                        "type": "string",
+                                        "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas venenatis enim at dolor rutrum, non volutpat metus faucibus. Aliquam tincidunt lorem non nisi vestibulum fermentum."
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean orci velit, varius vitae massa pellentesque, dapibus rhoncus dui. Proin at fringilla ipsum, non venenatis erat. Mauris cursus elit vel dictum condimentum. Mauris rhoncus auctor convallis. Mauris nisl tellus, aliquam lobortis interdum sed, consectetur vitae nulla. Integer laoreet metus nec neque scelerisque, sed lacinia diam interdum. Sed vitae ante nulla. Quisque eu felis nec orci molestie blandit. Pellentesque ac enim vestibulum, molestie nisi eget, interdum metus. Suspendisse sagittis auctor nibh vel sollicitudin. Sed dignissim urna eu est egestas iaculis. Nulla nec porta massa. Duis nunc elit, ornare sit amet justo quis."
+                                    },
+                                    "noOfUsers": {
+                                        "type": "integer",
+                                        "example": 10,
+                                        "default": 0
+                                    },
+                                    "noOfAdmins": {
+                                        "type": "integer",
+                                        "example": 2,
+                                        "default": 0
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Organization created"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Not allowed"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "409": {
+                        "description": "Organization already exists"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/test": {
             "get": {
                 "tags": [
@@ -107,6 +175,10 @@
         {
             "name": "Admin Authentication",
             "description": "Admin Authentication"
+        },
+        {
+            "name": "Organization",
+            "description": "Organization"
         },
         {
             "name": "Test",
