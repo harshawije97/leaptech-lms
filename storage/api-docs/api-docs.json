@@ -147,6 +147,47 @@
                 ]
             }
         },
+        "/admin/org/all": {
+            "get": {
+                "tags": [
+                    "Organization"
+                ],
+                "operationId": "824979088ed76f53dfa6c630a148597d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of organizations"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Not allowed"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/test": {
             "get": {
                 "tags": [

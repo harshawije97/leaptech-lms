@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrganizationIndexResource;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use Illuminate\Http\JsonResponse;
@@ -66,4 +67,38 @@ class OrganizationController extends Controller
             ->response()
             ->setStatusCode(201);
     }
+
+    // Get all organizations
+    #[OA\Get(
+        path: '/admin/org/all',
+        tags: ['Organization'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'search', in: 'query', schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'perPage', in: 'query', schema: new OA\Schema(type: 'integer', maximum: 100)),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'List of organizations'),
+            new OA\Response(response: 401, description: 'Unauthenticated'),
+            new OA\Response(response: 403, description: 'Not allowed'),
+        ]
+    )]
+    public function getAllOrganizations(Request $request): JsonResponse
+    {
+        // create query
+        $query = Organization::query();
+        // get by search keyword
+        if ($request->filled('search')) {
+            $search = strtolower($request->string('search'));
+            $query->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+        }
+        // pagination (get all)
+        $page = min($request->integer('perPage', 15), 100);
+        $organizations = $query->paginate($page);
+        // return the json
+        return (OrganizationIndexResource::collection($organizations)
+            ->response()
+            ->setStatusCode(200));
+    }
 }
+

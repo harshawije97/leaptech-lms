@@ -22,6 +22,7 @@ Route::prefix('admin')->group(function () {
 
         Route::prefix('org')->group(function () {
             Route::post('/create', [OrganizationController::class, 'createOrganization']);
+            Route::get('/all', [OrganizationController::class, 'getAllOrganizations']);
         });
     });
 });
