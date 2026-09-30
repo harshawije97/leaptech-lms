@@ -1,0 +1,4 @@
+name: LMS
+variables:
+  - name: root
+    value: http://localhost:8000/api

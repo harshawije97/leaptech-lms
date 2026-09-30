@@ -1,0 +1,22 @@
+info:
+  name: Update organization
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{root}}/admin/org/01a0e72b-b1a1-738b-bd07-0bb16764f740"
+  body:
+    type: form-urlencoded
+    data:
+      - name: short_description
+        value: '"Hello world"'
+  auth:
+    type: bearer
+    token: 8|ESbWaVCL8CccydSVuTA2Chc6UVrGmpHA1Kboy2imea3b6edd
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

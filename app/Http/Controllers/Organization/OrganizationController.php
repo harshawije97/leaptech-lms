@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateOrganizationRequest;
+use App\Http\Resources\OrganizationCreateResource;
 use App\Http\Resources\OrganizationIndexResource;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
@@ -64,7 +64,7 @@ class OrganizationController extends Controller
             'no_of_admins' => $data['noOfAdmins'] ?? 0,
         ]);
         // return information
-        return (new OrganizationResource($organization))
+        return (new OrganizationCreateResource($organization))
             ->response()
             ->setStatusCode(201);
     }
@@ -103,45 +103,13 @@ class OrganizationController extends Controller
     }
 
     // update organizations
-    #[OA\Patch(
-        path: '/admin/org/{organization}',
-        tags: ['Organization'],
-        security: [['sanctum' => []]],
-        parameters: [
-            new OA\Parameter(
-                name: 'organization',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'string', format: 'uuid')
-            ),
-        ],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(
-                properties: [
-                    new OA\Property(property: 'name', type: 'string', example: 'Acme Inc.'),
-                    new OA\Property(property: 'shortDescription', type: 'string'),
-                    new OA\Property(property: 'description', type: 'string', nullable: true),
-                    new OA\Property(property: 'noOfUsers', type: 'integer'),
-                    new OA\Property(property: 'noOfAdmins', type: 'integer'),
-                ],
-            )
-        ),
-        responses: [
-            new OA\Response(response: 200, description: 'Organization updated'),
-            new OA\Response(response: 401, description: 'Unauthenticated'),
-            new OA\Response(response: 403, description: 'Not allowed'),
-            new OA\Response(response: 404, description: 'Organization not found'),
-            new OA\Response(response: 409, description: 'Organization name already exists'),
-            new OA\Response(response: 422, description: 'Validation error'),
-        ]
-    )]
-    public function updateOrganization(UpdateOrganizationRequest $request, Organization $organization): JsonResponse
+    public function updateOrganization(Request $request, string $id): JsonResponse
     {
         // validate request
-        $updateOrg = $request->toDto();
+        $organization = Organization::find($id);
+
         // model the incoming data to schema &  update
-        $organization->update($updateOrg->toModelAttributes());
+        $organization->update($request->all());
         // return success
         return (new OrganizationResource($organization))
             ->response()
